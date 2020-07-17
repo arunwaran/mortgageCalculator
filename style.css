@@ -1,0 +1,23 @@
+#tableDiv{
+margin-top: 40px;
+visibility: hidden;
+}
+
+#inputDiv{
+border-style: solid;
+padding: 10px;
+}
+
+#summaryDiv{
+border-style: solid;
+padding: 10px;
+}
+
+th{
+background-color: #4db6e8;
+padding-right: 10px;
+}
+
+button{
+margin-top: 20px;
+}
