@@ -1,23 +1,66 @@
 #tableDiv{
-margin-top: 40px;
+margin-top: 10px;
 visibility: hidden;
 }
 
 #inputDiv{
 border-style: solid;
+border-color: #2f4f4f66;
 padding: 10px;
+margin: 5px;
 }
 
 #summaryDiv{
 border-style: solid;
+border-color: #2f4f4f66;
 padding: 10px;
+margin: 5px;
+}
+
+#headerDiv{
+
+}
+
+.container{
+  margin-top: 20px;
+}
+
+.row{
+  background-color: white;
+}
+
+body{
+  background-color: #0f10101f;
+}
+
+h1{
+  margin-left: 5px;
+}
+
+h4{
+  margin-bottom: 20px;
+}
+
+
+input{
+  margin-bottom: 20px;
+}
+
+table{
+width: -webkit-fill-available;
+margin: 5px;
 }
 
 th{
-background-color: #4db6e8;
+background-color: #3b7692;
+color: #ececec;
 padding-right: 10px;
 }
 
+tr:nth-child(odd){
+  background-color: #c0d2e2;
+}
+
 button{
-margin-top: 20px;
+
 }

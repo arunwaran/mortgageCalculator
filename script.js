@@ -1,3 +1,5 @@
+var totalInterestPaid = 0;
+
 function main(){
 	try{
 		//get users input values
@@ -6,7 +8,7 @@ function main(){
 		var loanYear = document.getElementById("loanYears").value;
 		var numPayments = document.getElementById("NumPayments").value;
 		var startDate = document.getElementById("startDate").valueAsDate;
-		//var totalPayPeriod = numPayments*loanYear
+		var totalPayPeriod = numPayments*loanYear
 
 	  //check if user input 'payment start date' is valid, returns true if valid, false if not
 	  var checkTheUsersDate = checkUsersDate(startDate);
@@ -20,7 +22,10 @@ function main(){
 				//calculates monthly payment amount
 				var pmt = calculatePMT(loanAmount,airateDecimal,numPayments,loanYear);
 				var jArry = makeJSON(startDate,pmt,airateDecimal,numPayments,loanAmount,loanYear);
-				console.log(jArry);
+
+				//call function to update summary
+				updateSummary(pmt,totalPayPeriod)
+
 				//make table visible
 				document.getElementById('tableDiv').style.visibility = 'visible'
 				return jArry;
@@ -53,27 +58,15 @@ function checkUsersDate(uDate){
 }
 
 function makeJSON(startDate,payment,rate,numOfpayments,balance,loanYear){
-	var totalPayment = (numOfpayments * loanYear)+1;
+	var totalPayment = (numOfpayments * loanYear) + 1;
 	var dateCounter = Math.floor(365/numOfpayments);
 	var jsonArry = [];
 
-	//while (balance > 0){
   for(i = 1; i  < totalPayment; i++){
 		var interestPaid = calculateInterestPaid(rate,numOfpayments,balance);
 		var checkLastPayment = interestPaid + payment;
-
-		//if balance is greater than the monthly payment plus interest
-		if (balance > checkLastPayment){
-			var principalPaid = calculatePrincipalPaid(payment,interestPaid);
-			balance = balance - principalPaid;
-		}
-		//if balance is equal to or less than the monthly payment plus interest
-		else{
-			//monthy payment is equal to interst plus the remaining balance, balance becomes 0
-			var principalPaid = calculatePrincipalPaid(payment,interestPaid);
-			payment = balance + interestPaid;
-			balance = 0;
-		}
+		var principalPaid = calculatePrincipalPaid(payment,interestPaid);
+		balance = balance - principalPaid;
 
 		var payDate = new Date(startDate.setDate(startDate.getDate()+dateCounter));
 		//update startDate
@@ -87,6 +80,9 @@ function makeJSON(startDate,payment,rate,numOfpayments,balance,loanYear){
 		info.principalPaid = principalPaid.toFixed(2);
 		info.balance = balance.toFixed(2);
 		jsonArry.push(info);
+
+		//add interestPaid
+		totalInterestPaid = totalInterestPaid + interestPaid;
 	}
 	return jsonArry;
 }
@@ -100,6 +96,13 @@ function calculatePMT(principal,rate,numOfpayments,loanTerm){
 	var bottom2 = Math.pow(bottom1,exponent);
 	var payment = (top/(1-bottom2));
 	return payment;
+}
+
+//updates the loan summary infomation
+function updateSummary(pmt,totalPayPeriod){
+	document.getElementById('lsummary').value = totalPayPeriod;
+	document.getElementById('SnumPay').value = pmt.toFixed(2);
+	document.getElementById('Tinterest').value = totalInterestPaid.toFixed(2);
 }
 
 //This function calculates that amount of the payment that will go towards paying the interest
